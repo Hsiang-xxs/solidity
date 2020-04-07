@@ -9,4 +9,3 @@ abstract contract C {
 // ----
 // SyntaxError: (158-171): No visibility specified. Did you intend to add "external"?
 // SyntaxError: (200-215): No visibility specified. Did you intend to add "public"?
-// TypeError: (158-171): Functions in interfaces must be declared external.

@@ -6,4 +6,3 @@ contract X is A {
 }
 // ----
 // DeclarationError: (55-79): Identifier already declared.
-// TypeError: (17-32): Cannot override public state variable.

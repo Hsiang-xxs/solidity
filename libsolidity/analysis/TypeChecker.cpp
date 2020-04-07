@@ -2785,12 +2785,53 @@ bool TypeChecker::visit(Identifier const& _identifier)
 	IdentifierAnnotation& annotation = _identifier.annotation();
 	if (!annotation.referencedDeclaration)
 	{
+		vector<Declaration const*>& uniqueDeclarations = annotation.overloadedDeclarations;
+		if (uniqueDeclarations.empty())
+		{
+			// TODO: move all this to a function
+			solAssert(annotation.candidateDeclarations.size() > 1, "");
+
+			for (Declaration const* declaration: annotation.candidateDeclarations)
+			{
+				solAssert(declaration, "");
+				// the declaration is functionDefinition, eventDefinition or a VariableDeclaration while declarations > 1
+				solAssert(
+					dynamic_cast<FunctionDefinition const*>(declaration) ||
+					dynamic_cast<EventDefinition const*>(declaration) ||
+					dynamic_cast<VariableDeclaration const*>(declaration) ||
+					dynamic_cast<MagicVariableDeclaration const*>(declaration),
+					"Found overloading involving something not a function, event or a (magic) variable."
+				);
+
+				FunctionTypePointer functionType { declaration->functionType(false) };
+				if (!functionType)
+					functionType = declaration->functionType(true);
+				solAssert(functionType, "Failed to determine the function type of the overloaded.");
+
+				for (auto parameter: functionType->parameterTypes() + functionType->returnParameterTypes())
+					if (!parameter)
+						m_errorReporter.fatalDeclarationError(_identifier.location(), "Function type can not be used in this context.");
+
+				if (uniqueDeclarations.end() == find_if(
+					uniqueDeclarations.begin(),
+					uniqueDeclarations.end(),
+					[&](Declaration const* d)
+					{
+						FunctionType const* newFunctionType = d->functionType(false);
+						if (!newFunctionType)
+							newFunctionType = d->functionType(true);
+						return newFunctionType && functionType->hasEqualParameterTypes(*newFunctionType);
+					}
+				))
+					uniqueDeclarations.push_back(declaration);
+			}
+		}
 		if (!annotation.arguments)
 		{
 			// The identifier should be a public state variable shadowing other functions
 			vector<Declaration const*> candidates;
 
-			for (Declaration const* declaration: annotation.overloadedDeclarations)
+			for (Declaration const* declaration: uniqueDeclarations)
 			{
 				if (VariableDeclaration const* variableDeclaration = dynamic_cast<decltype(variableDeclaration)>(declaration))
 					candidates.push_back(declaration);
@@ -2802,15 +2843,15 @@ bool TypeChecker::visit(Identifier const& _identifier)
 			else
 				m_errorReporter.fatalTypeError(_identifier.location(), "No unique declaration found after variable lookup.");
 		}
-		else if (annotation.overloadedDeclarations.empty())
+		else if (uniqueDeclarations.empty())
 			m_errorReporter.fatalTypeError(_identifier.location(), "No candidates for overload resolution found.");
-		else if (annotation.overloadedDeclarations.size() == 1)
-			annotation.referencedDeclaration = *annotation.overloadedDeclarations.begin();
+		else if (uniqueDeclarations.size() == 1)
+			annotation.referencedDeclaration = *uniqueDeclarations.begin();
 		else
 		{
 			vector<Declaration const*> candidates;
 
-			for (Declaration const* declaration: annotation.overloadedDeclarations)
+			for (Declaration const* declaration: uniqueDeclarations)
 			{
 				FunctionTypePointer functionType = declaration->functionType(true);
 				solAssert(!!functionType, "Requested type not present.");

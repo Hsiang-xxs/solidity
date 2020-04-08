@@ -86,10 +86,10 @@ Prerequisites
 
 Some tests require the `evmone <https://github.com/ethereum/evmone/releases>`_
 library, others require `libz3 <https://github.com/Z3Prover/z3>`_. The test script
-tries to discover the location of the ``evmone`` library, which can be located in
-the current directory, or the ``deps`` folder in the project top level. The required
-file is called ``libevmone.so`` on Linux systems, ``evmone.dll`` on Windows systems
-and ``libevmone.dylib`` on macOS.
+tries to discover the location of the ``evmone`` library, which can be located
+in the current directory, installed on the system level, or the ``deps`` folder
+in the project top level. The required file is called ``libevmone.so`` on Linux
+systems, ``evmone.dll`` on Windows systems and ``libevmone.dylib`` on macOS.
 
 Running the tests
 -----------------
@@ -111,13 +111,9 @@ use it are skipped. These tests are ``libsolididty/semanticTests``, ``libsolidit
 and place it in the project root path or inside the ``deps`` folder.
 
 If the ``libz3`` library is not installed on your system, you should disable the
-SMT tests using the ``--no-smt`` option when running ``./scripts/tests.sh`` or
-``./scripts/soltest.sh``. These tests are ``libsolidity/smtCheckerTests`` and ``libsolidity/smtCheckerTestsJSON``.
-
-.. csv-table:: The full test suite
-   :file: ./contributing/tests-list.csv
-   :widths: 40, 60
-   :header-rows: 1
+SMT tests by exporting ``SMT_FLAGS=--no-smt`` before running ``./scripts/tests.sh`` or
+running ``./scripts/soltest.sh --no-smt``.
+These tests are ``libsolidity/smtCheckerTests`` and ``libsolidity/smtCheckerTestsJSON``.
 
 .. note ::
 

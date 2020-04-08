@@ -105,7 +105,7 @@
                         "scope": 9,
                         "stateVariable": false,
                         "storageLocation": "default",
-                        "type": "uint8",
+                        "type": null,
                         "typeName": null,
                         "value": null,
                         "visibility": "internal"
@@ -122,11 +122,11 @@
                         "hexvalue": "32",
                         "isConstant": false,
                         "isLValue": false,
-                        "isPure": true,
+                        "isPure": false,
                         "lValueRequested": false,
                         "subdenomination": null,
                         "token": "number",
-                        "type": "int_const 2",
+                        "type": null,
                         "value": "2"
                       },
                       "id": 4,
@@ -151,7 +151,7 @@
                         "lValueRequested": false,
                         "operator": "++",
                         "prefix": false,
-                        "type": "uint8"
+                        "type": null
                       },
                       "children":
                       [
@@ -164,7 +164,7 @@
                               null
                             ],
                             "referencedDeclaration": 3,
-                            "type": "uint8",
+                            "type": null,
                             "value": "x"
                           },
                           "id": 6,

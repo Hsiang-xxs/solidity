@@ -54,8 +54,8 @@
                     "storageLocation": "default",
                     "typeDescriptions":
                     {
-                      "typeIdentifier": "t_uint8",
-                      "typeString": "uint8"
+                      "typeIdentifier": null,
+                      "typeString": null
                     },
                     "typeName": null,
                     "value": null,
@@ -70,7 +70,7 @@
                   "id": 4,
                   "isConstant": false,
                   "isLValue": false,
-                  "isPure": true,
+                  "isPure": false,
                   "kind": "number",
                   "lValueRequested": false,
                   "nodeType": "Literal",
@@ -78,8 +78,8 @@
                   "subdenomination": null,
                   "typeDescriptions":
                   {
-                    "typeIdentifier": "t_rational_2_by_1",
-                    "typeString": "int_const 2"
+                    "typeIdentifier": null,
+                    "typeString": null
                   },
                   "value": "2"
                 },
@@ -110,14 +110,14 @@
                     "src": "39:1:1",
                     "typeDescriptions":
                     {
-                      "typeIdentifier": "t_uint8",
-                      "typeString": "uint8"
+                      "typeIdentifier": null,
+                      "typeString": null
                     }
                   },
                   "typeDescriptions":
                   {
-                    "typeIdentifier": "t_uint8",
-                    "typeString": "uint8"
+                    "typeIdentifier": null,
+                    "typeString": null
                   }
                 },
                 "id": 8,

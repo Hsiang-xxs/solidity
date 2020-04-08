@@ -904,6 +904,10 @@ void IRGeneratorForStatements::endVisit(MemberAccess const& _memberAccess)
 		{
 			solUnimplementedAssert(false, "");
 		}
+		else if (member == "interfaceId")
+		{
+			solUnimplementedAssert(false, "");
+		}
 		else if (set<string>{"encode", "encodePacked", "encodeWithSelector", "encodeWithSignature", "decode"}.count(member))
 		{
 			// no-op

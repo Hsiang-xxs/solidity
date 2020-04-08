@@ -1580,6 +1580,20 @@ bool ExpressionCompiler::visit(MemberAccess const& _memberAccess)
 			m_context << Instruction::DUP1 << u256(32) << Instruction::ADD;
 			utils().storeStringData(contract.name());
 		}
+		else if (member == "interfaceId")
+		{
+			TypePointer arg = dynamic_cast<MagicType const&>(*_memberAccess.expression().annotation().type).typeArgument();
+			ContractDefinition const& contract = dynamic_cast<ContractType const&>(*arg).contractDefinition();
+			u256 result{0};
+			for (auto& function : contract.definedFunctions()) {
+				const u256 hash(util::keccak256(function->externalSignature()));
+				if (&function == &*contract.definedFunctions().rbegin())
+					result = hash;
+				else
+					result = result ^ hash;
+			}
+			m_context << result;
+		}
 		else if ((set<string>{"encode", "encodePacked", "encodeWithSelector", "encodeWithSignature", "decode"}).count(member))
 		{
 			// no-op
